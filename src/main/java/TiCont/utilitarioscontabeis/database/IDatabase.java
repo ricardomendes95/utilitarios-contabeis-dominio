@@ -1,5 +1,7 @@
 package TiCont.utilitarioscontabeis.database;
 
-public interface IDatabase {
+import java.sql.SQLException;
 
+public interface IDatabase {
+	public void getConnection() throws SQLException;
 }

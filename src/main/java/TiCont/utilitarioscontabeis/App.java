@@ -1,40 +1,23 @@
 package TiCont.utilitarioscontabeis;
 
-import java.io.InputStream;
-import java.util.Properties;
+import java.sql.SQLException;
 
-/**
- * Hello world!
- *
- */
+import TiCont.utilitarioscontabeis.database.IDatabase;
+
 public class App 
-{
-	public App() {
-		teste();
-	}
-	private void teste () {
-		Properties prop = new Properties();
-    	
-    	String fileName = "database.properties";
-    	
-    	try {
-			InputStream inputStream = getClass().getClassLoader().getResourceAsStream(fileName);
-			if (inputStream != null ) {
-				prop.load(inputStream);
-				System.out.println(prop.getProperty("uid"));
-			}
-			
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	
+{	
     public static void main( String[] args )
     {
-    	new App();
+    	IContainer container = new Container();
     	
+    	IDatabase db = container.getSQLAnywhereDatabaseConnection();
     	
-        System.out.println( "Hello World!" );
+    	try {
+			db.getConnection();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+    	
+    	System.out.println("App funcionando!");
     }
 }

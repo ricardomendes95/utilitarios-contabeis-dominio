@@ -1,5 +1,7 @@
 package TiCont.utilitarioscontabeis;
 
-public interface IContainer {
+import TiCont.utilitarioscontabeis.database.IDatabase;
 
+public interface IContainer {
+	public IDatabase getSQLAnywhereDatabaseConnection();
 }
