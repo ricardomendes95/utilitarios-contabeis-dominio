@@ -1,8 +1,6 @@
 package TiCont.utilitarioscontabeis;
 
-import java.sql.SQLException;
-
-import TiCont.utilitarioscontabeis.database.IDatabase;
+import TiCont.utilitarioscontabeis.models.ResponsabilityLetter;
 
 public class App 
 {	
@@ -10,13 +8,13 @@ public class App
     {
     	IContainer container = new Container();
     	
-    	IDatabase db = container.getSQLAnywhereDatabaseConnection();
+    	ResponsabilityLetter rl = container.getResponsabilityLetterRepository().getResponsabilityLetter();
     	
-    	try {
-			db.getConnection();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+    	if (rl == null) {
+    		System.out.println("Null");
+    	} else {
+    		System.out.println("Tem valor");
+    	}
     	
     	System.out.println("App funcionando!");
     }

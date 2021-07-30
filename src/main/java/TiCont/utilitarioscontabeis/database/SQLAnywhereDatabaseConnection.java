@@ -10,6 +10,7 @@ import java.sql.Statement;
 import TiCont.utilitarioscontabeis.utils.PropertiesReader;
 
 public class SQLAnywhereDatabaseConnection implements IDatabase {
+	private Connection connection;
 	private String uid;
 	private String pwd;
 	private String server;
@@ -26,35 +27,17 @@ public class SQLAnywhereDatabaseConnection implements IDatabase {
 		this.host = propertiesReader.getProp("host");
 	}
 
-	public void getConnection() {
-		// uid - user id
-		// pwd - password
-		// eng - Sybase database server name
-		// database - sybase database name
-		// host - database host machine ip
-		String databaseURL = getDatabaseURL();
-
-		// Connect to Sybase Database
-		Connection con;
+	public Connection getConnection() {
 		try {
-//			Class.forName("sybase.jdbc4.sqlanywhere.IDriver");
-			con = DriverManager.getConnection(databaseURL);
+			connection = DriverManager.getConnection(getDatabaseURL());
 		
-			Statement statement = con.createStatement();
-	
-			// We use Sybase specific select getdate() query to return date
-			ResultSet rs = statement.executeQuery("SELECT * FROM BETHADBA.geempre");
-	
-			while (rs.next()) {				
-				String currentDate = rs.getString("nome_emp"); // get first column returned
-				System.out.println("Current Date from Sybase is : " + currentDate);
-			}
-			rs.close();
-			statement.close();
-			con.close();
+			return connection;
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			
+			connection = null;
+			
+			return connection;
 		}
 	}
 	
@@ -64,5 +47,9 @@ public class SQLAnywhereDatabaseConnection implements IDatabase {
 				";eng=" + server + 
 				";database=" + database + 
 				";links=tcpip(host=" + host  + ")";
+	}
+	
+	public boolean hasConnection() {
+		return connection != null;
 	}
 }
