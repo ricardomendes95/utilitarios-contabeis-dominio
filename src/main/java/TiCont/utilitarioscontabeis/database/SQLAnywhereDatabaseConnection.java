@@ -12,7 +12,7 @@ import TiCont.utilitarioscontabeis.utils.PropertiesReader;
 public class SQLAnywhereDatabaseConnection implements IDatabase {
 	private String uid;
 	private String pwd;
-	private String eng;
+	private String server;
 	private String database;
 	private String host;
 
@@ -21,7 +21,7 @@ public class SQLAnywhereDatabaseConnection implements IDatabase {
 
 		this.uid = propertiesReader.getProp("uid");
 		this.pwd = propertiesReader.getProp("pwd");
-		this.eng = propertiesReader.getProp("eng");
+		this.server = propertiesReader.getProp("server");
 		this.database = propertiesReader.getProp("database");
 		this.host = propertiesReader.getProp("host");
 	}
@@ -37,16 +37,16 @@ public class SQLAnywhereDatabaseConnection implements IDatabase {
 		// Connect to Sybase Database
 		Connection con;
 		try {
-			Class.forName("sybase.jdbc4.sqlanywhere.IDriver");
+//			Class.forName("sybase.jdbc4.sqlanywhere.IDriver");
 			con = DriverManager.getConnection(databaseURL);
 		
 			Statement statement = con.createStatement();
 	
 			// We use Sybase specific select getdate() query to return date
-			ResultSet rs = statement.executeQuery("SELECT GETDATE()");
+			ResultSet rs = statement.executeQuery("SELECT * FROM BETHADBA.geempre");
 	
-			if (rs.next()) {
-				Date currentDate = rs.getDate(1); // get first column returned
+			while (rs.next()) {				
+				String currentDate = rs.getString("nome_emp"); // get first column returned
 				System.out.println("Current Date from Sybase is : " + currentDate);
 			}
 			rs.close();
@@ -55,16 +55,13 @@ public class SQLAnywhereDatabaseConnection implements IDatabase {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 	}
 	
 	private String getDatabaseURL() {
 		return "jdbc:sqlanywhere:uid=" + uid +
 				";pwd=" + pwd + 
-				";eng=" + eng + 
+				";eng=" + server + 
 				";database=" + database + 
 				";links=tcpip(host=" + host  + ")";
 	}
